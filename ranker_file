@@ -1,7 +1,8 @@
 cache = {}#dictionary goes in here
 
 index={}
-def crawl_page(seed):
+def crawl_page(seed):#function that goes through the dictionary by keys and takes 
+		     #Strings that exist in skills and adds them to index.
     tocrawl = [seed]
     crawled = []
     graph = {}
@@ -14,18 +15,19 @@ def crawl_page(seed):
             return index
 
 
-def skill_calculator(list):
+def skill_calculator(list): #function that crawls through each element in list
 	for a in list:
 		crawl_page(a)
 	return index
 
-def get_page(url):
+def get_page(url):	#checks to make sure the key is in the dictionary of values to be ranked
     if url in cache:
         return cache[url]
     else:
         return None
 
-def add_page_to_index(index, skills, job, content):
+def add_page_to_index(index, skills, job, content): #splits values of keys in cache and checks if values are in skills.
+							# if they are, it adds the value to index.
 	import re
 	words=re.split('[; |, | |\*|\n]',content)
     	for word in words:
@@ -36,7 +38,8 @@ def add_page_to_index(index, skills, job, content):
         			else:
             				index[word] = [job]
 
-def compute_ranks(graph):
+def compute_ranks(graph):	#function that is the algorithm to rank values in index.
+				# same function as Google's original search algorithm.
     d = 0.8 # damping factor
     numloops = 10
 
@@ -58,8 +61,8 @@ def compute_ranks(graph):
     return ranks
 
 
-a=skill_calculator(cache)
-print ' '.join(sorted(a, key=lambda k: len(a[k]), reverse=True))
+a=skill_calculator(cache) #creates list of ranked values of dictionary as a.
+print ' '.join(sorted(a, key=lambda k: len(a[k]), reverse=True)) #organizes list
 
 
 
